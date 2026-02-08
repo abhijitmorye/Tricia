@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>A Little Gift 💝</title>
+  <style>
+    :root{
+      --bg1:#ff7eb3;
+      --bg2:#ff758c;
+      --card:#ffffff;
+      --text:#2b2b2b;
+      --accent:#e63946;
+      --shadow: 0 25px 60px rgba(0,0,0,.22);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 20% 20%, rgba(255,255,255,.35), transparent 55%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2));
+    }
+
+    /* floating hearts background */
+    .bg-heart{
+      position:fixed;
+      bottom:-40px;
+      font-size:22px;
+      opacity:.9;
+      animation: floatUp linear forwards;
+      pointer-events:none;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.18));
+    }
+    @keyframes floatUp{
+      from{ transform: translateY(0) scale(.9) rotate(-8deg); opacity: .95;}
+      to{ transform: translateY(-120vh) scale(1.3) rotate(12deg); opacity: 0;}
+    }
+
+    .wrap{
+      width:min(520px, 92vw);
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(255,255,255,.6);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 28px 26px;
+      text-align:center;
+      position:relative;
+    }
+
+    h1{
+      margin: 0 0 8px;
+      font-size: 28px;
+      color: var(--accent);
+      letter-spacing: .2px;
+    }
+    p{
+      margin: 0 0 16px;
+      color: var(--text);
+      line-height: 1.35;
+      font-size: 16px;
+    }
+
+    .hint{
+      font-size: 13px;
+      opacity: .78;
+      margin-top: 8px;
+    }
+
+    /* Gift box */
+    .gift-area{
+      margin: 18px auto 10px;
+      width: 220px;
+      height: 220px;
+      display:grid;
+      place-items:center;
+      position:relative;
+    }
+
+    .gift{
+      width: 170px;
+      height: 140px;
+      position:relative;
+      cursor:pointer;
+      user-select:none;
+      transform: translateY(2px);
+      transition: transform .15s ease;
+      filter: drop-shadow(0 18px 25px rgba(0,0,0,.18));
+    }
+    .gift:active{ transform: translateY(8px) scale(.99); }
+
+    .box{
+      width: 170px;
+      height: 110px;
+      background: linear-gradient(180deg, #ff4d6d, #e63946);
+      border-radius: 14px;
+      position:absolute;
+      bottom:0;
+      left:0;
+      overflow:hidden;
+    }
+    .box:before{
+      content:"";
+      position:absolute;
+      left: 50%;
+      top:0;
+      transform: translateX(-50%);
+      width: 28px;
+      height: 110px;
+      background: rgba(255,255,255,.45);
+      border-radius: 12px;
+    }
+    .box:after{
+      content:"";
+      position:absolute;
+      left:0; right:0;
+      top: 42%;
+      height: 24px;
+      background: rgba(255,255,255,.22);
+    }
+
+    .lid{
+      width: 185px;
+      height: 52px;
+      background: linear-gradient(180deg, #ff6b81, #ff4d6d);
+      border-radius: 14px;
+      position:absolute;
+      top: 20px;
+      left: -7.5px;
+      transform-origin: 18px 46px;
+      transition: transform .7s cubic-bezier(.2,.9,.2,1);
+      box-shadow: 0 8px 0 rgba(0,0,0,.06) inset;
+    }
+    .lid:before{
+      content:"";
+      position:absolute;
+      left: 50%;
+      top:0;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 52px;
+      background: rgba(255,255,255,.40);
+      border-radius: 12px;
+    }
+
+    /* Ribbon bow */
+    .bow{
+      position:absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 50px;
+      pointer-events:none;
+    }
+    .bow:before, .bow:after{
+      content:"";
+      position:absolute;
+      width: 42px;
+      height: 34px;
+      background: #ffd166;
+      border-radius: 22px 22px 22px 8px;
+      top: 8px;
+      box-shadow: 0 6px 0 rgba(0,0,0,.06) inset;
+    }
+    .bow:before{ left: 0; transform: rotate(-14deg); }
+    .bow:after{
+      right: 0;
+      border-radius: 22px 22px 8px 22px;
+      transform: rotate(14deg);
+    }
+    .knot{
+      position:absolute;
+      left:50%;
+      top: 16px;
+      transform: translateX(-50%);
+      width: 18px;
+      height: 18px;
+      background:#ffb703;
+      border-radius: 6px;
+      box-shadow: 0 4px 0 rgba(0,0,0,.06) inset;
+    }
+
+    .opened .lid{
+      transform: rotate(-55deg) translate(-10px, -15px);
+    }
+
+    /* Message card */
+    .msg{
+      margin: 14px auto 0;
+      background: var(--card);
+      border-radius: 18px;
+      padding: 16px 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.12);
+      border: 1px solid rgba(0,0,0,.06);
+      opacity: 0;
+      transform: translateY(10px) scale(.98);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .msg.show{
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .msg h2{
+      margin: 0 0 6px;
+      color: #d62828;
+      font-size: 20px;
+    }
+    .msg p{
+      margin: 0;
+      font-size: 15px;
+    }
+
+    /* Chocolates */
+    .choco{
+      position:fixed;
+      top:-60px;
+      width: 44px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #6b3f2a, #4e2a1f);
+      box-shadow: 0 10px 18px rgba(0,0,0,.18);
+      pointer-events:none;
+      overflow:hidden;
+      animation: fallDown linear forwards;
+    }
+    .choco:before{
+      content:"";
+      position:absolute;
+      inset: 6px 6px 10px 6px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0));
+    }
+    .choco:after{
+      content:"";
+      position:absolute;
+      left: 10px;
+      top: 9px;
+      width: 24px;
+      height: 18px;
+      border-radius: 8px;
+      background: rgba(0,0,0,.10);
+    }
+
+    @keyframes fallDown{
+      0%{ transform: translateY(-10vh) rotate(0deg); opacity: 1;}
+      100%{ transform: translateY(110vh) rotate(360deg); opacity: .96;}
+    }
+
+    /* Confetti hearts burst */
+    .burst{
+      position:fixed;
+      left: var(--x);
+      top: var(--y);
+      transform: translate(-50%, -50%);
+      pointer-events:none;
+    }
+    .burst span{
+      position:absolute;
+      font-size: 18px;
+      animation: pop 900ms ease-out forwards;
+      filter: drop-shadow(0 10px 14px rgba(0,0,0,.18));
+    }
+    @keyframes pop{
+      0%{ transform: translate(0,0) scale(.6); opacity: 1;}
+      100%{ transform: translate(var(--dx), var(--dy)) scale(1.15); opacity: 0;}
+    }
+
+    .btn-row{
+      margin-top: 14px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .mini{
+      border:none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor:pointer;
+      background: rgba(255,255,255,.8);
+      box-shadow: 0 10px 25px rgba(0,0,0,.12);
+      transition: transform .15s ease;
+      font-weight:600;
+    }
+    .mini:hover{ transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <h1>For You 💝</h1>
+    <p>Tap the gift box to open a little surprise… with extra love and lots of chocolates 🍫✨</p>
+
+    <div class="gift-area">
+      <div class="gift" id="gift" aria-label="Open gift" role="button" tabindex="0">
+        <div class="lid"></div>
+        <div class="bow"><div class="knot"></div></div>
+        <div class="box"></div>
+      </div>
+      <div class="hint">🎁 Click / tap the gift box</div>
+    </div>
+
+    <div class="msg" id="msg">
+      <h2>Hey Tricia ❤️</h2>
+      <p>
+        I just wanted to say… you make everything feel brighter. 🌸<br/>
+        If you ever need a reason to smile, this is me volunteering. 😊<br/>
+        Here’s a shower of chocolates (and feelings) just for you 🍫💖
+      </p>
+    </div>
+
+    <div class="btn-row">
+      <button class="mini" id="moreHearts">More hearts 💞</button>
+      <button class="mini" id="moreChoco">More chocolates 🍫</button>
+      <button class="mini" id="reset">Reset 🔄</button>
+    </div>
+  </div>
+
+<script>
+  const gift = document.getElementById("gift");
+  const msg = document.getElementById("msg");
+  const moreHeartsBtn = document.getElementById("moreHearts");
+  const moreChocoBtn = document.getElementById("moreChoco");
+  const resetBtn = document.getElementById("reset");
+
+  let opened = false;
+  let chocoInterval = null;
+  let bgHeartInterval = null;
+
+  // Background hearts (gentle)
+  function startBgHearts(rateMs = 320){
+    stopBgHearts();
+    bgHeartInterval = setInterval(() => spawnBgHeart(), rateMs);
+  }
+  function stopBgHearts(){
+    if(bgHeartInterval) clearInterval(bgHeartInterval);
+    bgHeartInterval = null;
+  }
+  function spawnBgHeart(){
+    const heart = document.createElement("div");
+    heart.className = "bg-heart";
+    heart.textContent = Math.random() < 0.5 ? "💖" : "💗";
+    heart.style.left = (Math.random() * 100) + "vw";
+    heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+    heart.style.fontSize = (18 + Math.random() * 18) + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 9000);
+  }
+
+  // Chocolates rain
+  function startChocolates(rateMs = 90){
+    stopChocolates();
+    chocoInterval = setInterval(() => spawnChocolate(), rateMs);
+    // auto-stop after a bit (so it doesn't go forever)
+    setTimeout(stopChocolates, 5500);
+  }
+  function stopChocolates(){
+    if(chocoInterval) clearInterval(chocoInterval);
+    chocoInterval = null;
+  }
+  function spawnChocolate(){
+    const c = document.createElement("div");
+    c.className = "choco";
+    c.style.left = (Math.random() * 100) + "vw";
+    c.style.animationDuration = (2.8 + Math.random() * 2.2) + "s";
+    c.style.transform = `translateY(-10vh) rotate(${Math.random()*120}deg)`;
+    // little size variety
+    const scale = 0.7 + Math.random() * 0.9;
+    c.style.scale = scale;
+
+    // sprinkle a few candy emojis too
+    if (Math.random() < 0.22) {
+      c.style.background = "linear-gradient(180deg,#7a3e2b,#3b1f16)";
+      c.innerHTML = `<div style="position:absolute;inset:0;display:grid;place-items:center;font-size:18px;opacity:.9">🍬</div>`;
+    } else if (Math.random() < 0.10) {
+      c.innerHTML = `<div style="position:absolute;inset:0;display:grid;place-items:center;font-size:18px;opacity:.9">🍫</div>`;
+    }
+
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5200);
+  }
+
+  // Cute heart burst at click position
+  function burst(x, y){
+    const b = document.createElement("div");
+    b.className = "burst";
+    b.style.setProperty("--x", x + "px");
+    b.style.setProperty("--y", y + "px");
+
+    const emojis = ["💖","💘","💗","💞","✨","🍫"];
+    const count = 14;
+    for(let i=0;i<count;i++){
+      const s = document.createElement("span");
+      s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      const angle = (Math.PI * 2) * (i / count);
+      const radius = 70 + Math.random()*40;
+      const dx = Math.cos(angle) * radius;
+      const dy = Math.sin(angle) * radius;
+      s.style.setProperty("--dx", dx.toFixed(1) + "px");
+      s.style.setProperty("--dy", dy.toFixed(1) + "px");
+      s.style.transform = "translate(0,0) scale(.6)";
+      b.appendChild(s);
+    }
+    document.body.appendChild(b);
+    setTimeout(() => b.remove(), 950);
+  }
+
+  function openGift(clientX, clientY){
+    if(opened) return;
+    opened = true;
+    gift.classList.add("opened");
+    msg.classList.add("show");
+    burst(clientX, clientY);
+    startChocolates(85);
+    startBgHearts(260);
+  }
+
+  function resetAll(){
+    opened = false;
+    gift.classList.remove("opened");
+    msg.classList.remove("show");
+    stopChocolates();
+    stopBgHearts();
+  }
+
+  // Click / tap handlers
+  gift.addEventListener("click", (e) => openGift(e.clientX, e.clientY));
+  gift.addEventListener("keydown", (e) => {
+    if(e.key === "Enter" || e.key === " "){
+      const rect = gift.getBoundingClientRect();
+      openGift(rect.left + rect.width/2, rect.top + rect.height/2);
+    }
+  });
+
+  // Buttons
+  moreHeartsBtn.addEventListener("click", () => {
+    // quick burst of background hearts
+    for(let i=0;i<10;i++) setTimeout(spawnBgHeart, i*90);
+  });
+
+  moreChocoBtn.addEventListener("click", () => {
+    startChocolates(65);
+  });
+
+  resetBtn.addEventListener("click", resetAll);
+
+  // Start a few subtle hearts even before opening (very light)
+  for(let i=0;i<6;i++) setTimeout(spawnBgHeart, i*250);
+</script>
+</body>
+</html>
